@@ -11,3 +11,7 @@ A somewhat simple TPA (Teleport Request) plugin for Minecraft Beta 1.7.3! Probab
 
 > [!NOTE]  
 > The permissions are, by default, disabled (except for the /tpareload command).
+
+### Development
+
+Please use your own Craftbukkit copy.
