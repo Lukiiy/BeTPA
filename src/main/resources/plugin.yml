@@ -16,3 +16,4 @@ commands:
   tpareload:
     usage: "/<command>"
     description: Reloads the plugin
+    permission: tpa.reload

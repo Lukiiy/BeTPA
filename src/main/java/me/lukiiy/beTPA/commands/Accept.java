@@ -20,6 +20,11 @@ public class Accept implements CommandExecutor {
             return true;
         }
 
+        if (!BeTPA.getInstance().quickPermissionCheck(commandSender, "answer")) {
+            commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("permission"));
+            return true;
+        }
+
         TPAManager tpaManager = BeTPA.getInstance().getTPAManager();
         Player player = (Player) commandSender;
 

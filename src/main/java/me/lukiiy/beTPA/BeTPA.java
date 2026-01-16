@@ -4,6 +4,7 @@ import me.lukiiy.beTPA.commands.Accept;
 import me.lukiiy.beTPA.commands.Deny;
 import me.lukiiy.beTPA.commands.Reload;
 import me.lukiiy.beTPA.commands.Send;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BeTPA extends JavaPlugin {
@@ -49,8 +50,12 @@ public class BeTPA extends JavaPlugin {
         getConfiguration().getString("msgs.denySender", "§e%p §cdenied§f your teleport request.");
         getConfiguration().getString("msgs.self", "§cYou cannot send a request to yourself.");
         getConfiguration().getString("msgs.already", "§cYou already sent a request to %p.");
-        getConfiguration().getString("msgs.ignored", "§c%p has ignored your teleport request.");
+        getConfiguration().getString("msgs.ignore", "§cYou ignored %p's teleport request.");
+        getConfiguration().getString("msgs.ignoreSender", "§c%p has ignored your teleport request.");
         getConfiguration().getString("msgs.nothing", "§cThere are no requests to accept.");
+        getConfiguration().getString("msgs.permission", "§cYou don't have permission to use this.");
+        getConfiguration().getString("msgs.permissionTarget", "§c%p doesn't have permission to answer it.");
+        getConfiguration().getBoolean("requirePermission", false);
         getConfiguration().getInt("timeout", 60);
 
         getConfiguration().save();
@@ -58,5 +63,11 @@ public class BeTPA extends JavaPlugin {
 
     public String getConfiguredMsg(String key) {
         return getConfiguration().getString("msgs." + key, "").replace('&', '§');
+    }
+
+    public boolean quickPermissionCheck(CommandSender player, String act) {
+        if (!getConfiguration().getBoolean("requirePermission", false)) return true;
+
+        return player.hasPermission("tpa." + act) || player.isOp();
     }
 }

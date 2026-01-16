@@ -1,7 +1,6 @@
 package me.lukiiy.beTPA.commands;
 
 import me.lukiiy.beTPA.BeTPA;
-import me.lukiiy.beTPA.Request;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,6 +15,11 @@ public class Send implements CommandExecutor {
             return true;
         }
 
+        if (!BeTPA.getInstance().quickPermissionCheck(commandSender, "request")) {
+            commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("permission"));
+            return true;
+        }
+
         if (strings.length == 0) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("usage").replace("%c", "/tpa <player>"));
             return true;
@@ -24,14 +28,17 @@ public class Send implements CommandExecutor {
         Player player = (Player) commandSender;
         Player target = Bukkit.getServer().getPlayer(strings[0]);
 
-        if (target == null || !target.isOnline()) {
+        if (target == null) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("notfound"));
             return true;
         }
 
-        Request.Result result = BeTPA.getInstance().getTPAManager().sendRequest(player, target);
+        if (!BeTPA.getInstance().quickPermissionCheck(target, "answer")) {
+            commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("permissionTarget").replace("%p", target.getDisplayName()));
+            return true;
+        }
 
-        switch (result) {
+        switch (BeTPA.getInstance().getTPAManager().sendRequest(player, target)) {
             case SUCCESS:
                 long seconds = BeTPA.getInstance().getTPAManager().time;
 

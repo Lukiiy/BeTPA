@@ -15,11 +15,11 @@ public class TPAManager {
 
         requests.computeIfAbsent(target.getUniqueId(), k -> new ConcurrentHashMap<>());
 
-        Map<UUID, Request> targetRequests = requests.get(target.getUniqueId());
+        Map<UUID, Request> targetReq = requests.get(target.getUniqueId());
         UUID requesterId = requester.getUniqueId();
         UUID targetId = target.getUniqueId();
 
-        if (targetRequests.containsKey(requester.getUniqueId())) return Request.Result.ALREADY_REQUESTED;
+        if (targetReq.containsKey(requester.getUniqueId())) return Request.Result.ALREADY_REQUESTED;
 
         int taskId = -1;
         if (time > -1) {
@@ -27,12 +27,15 @@ public class TPAManager {
                 Map<UUID, Request> map = requests.get(targetId);
                 if (map == null) return;
 
+                requester.sendMessage(BeTPA.getInstance().getConfiguredMsg("ignoreSender").replace("%p", target.getDisplayName()));
+                target.sendMessage(BeTPA.getInstance().getConfiguredMsg("ignore").replace("%p", requester.getDisplayName()));
+
                 map.remove(requesterId);
                 if (map.isEmpty()) requests.remove(targetId);
             }, Math.max(20, 20 * time));
         }
 
-        targetRequests.put(requesterId, new Request(requester, target, taskId));
+        targetReq.put(requesterId, new Request(requester, target, taskId));
         return Request.Result.SUCCESS;
     }
 
@@ -43,10 +46,10 @@ public class TPAManager {
     }
 
     public void accept(Player target, UUID requesterId) {
-        Map<UUID, Request> targetRequests = requests.get(target.getUniqueId());
-        if (targetRequests == null) return;
+        Map<UUID, Request> targetReq = requests.get(target.getUniqueId());
+        if (targetReq == null) return;
 
-        Request request = targetRequests.remove(requesterId);
+        Request request = targetReq.remove(requesterId);
         if (request == null) return;
 
         request.cancelExpiry();
@@ -54,14 +57,14 @@ public class TPAManager {
         Player requester = request.requester;
         if (requester != null && requester.isOnline()) requester.teleport(target.getLocation());
 
-        if (targetRequests.isEmpty()) requests.remove(target.getUniqueId());
+        if (targetReq.isEmpty()) requests.remove(target.getUniqueId());
     }
 
     public void acceptAll(Player target) {
-        Map<UUID, Request> targetRequests = requests.remove(target.getUniqueId());
-        if (targetRequests == null) return;
+        Map<UUID, Request> targetReq = requests.remove(target.getUniqueId());
+        if (targetReq == null) return;
 
-        for (Request request : targetRequests.values()) {
+        for (Request request : targetReq.values()) {
             request.cancelExpiry();
             Player requester = request.requester;
 
@@ -70,22 +73,22 @@ public class TPAManager {
     }
 
     public void deny(Player target, UUID requesterId) {
-        Map<UUID, Request> targetRequests = requests.get(target.getUniqueId());
-        if (targetRequests == null) return;
+        Map<UUID, Request> targetReq = requests.get(target.getUniqueId());
+        if (targetReq == null) return;
 
-        Request req = targetRequests.remove(requesterId);
+        Request req = targetReq.remove(requesterId);
         if (req == null) return;
 
         req.cancelExpiry();
 
-        if (targetRequests.isEmpty()) requests.remove(target.getUniqueId());
+        if (targetReq.isEmpty()) requests.remove(target.getUniqueId());
     }
 
     public void denyAll(Player target) {
-        Map<UUID, Request> targetRequests = requests.remove(target.getUniqueId());
-        if (targetRequests == null) return;
+        Map<UUID, Request> targetReq = requests.remove(target.getUniqueId());
+        if (targetReq == null) return;
 
-        for (Request req : targetRequests.values()) req.cancelExpiry();
+        for (Request req : targetReq.values()) req.cancelExpiry();
     }
 
     public void removeAllFor(Player player) {
