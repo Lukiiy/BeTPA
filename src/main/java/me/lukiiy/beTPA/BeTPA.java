@@ -6,8 +6,6 @@ import me.lukiiy.beTPA.commands.Reload;
 import me.lukiiy.beTPA.commands.Send;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.time.Duration;
-
 public class BeTPA extends JavaPlugin {
     private static BeTPA instance;
     private TPAManager tpaManager;
