@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.lukiiy"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -23,9 +23,7 @@ tasks {
 
     jar { enabled = false }
 
-    build {
-        dependsOn("shadowJar")
-    }
+    build { dependsOn("shadowJar") }
 
     processResources {
         val props = mapOf("version" to version)
