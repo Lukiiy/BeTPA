@@ -1,41 +1,28 @@
 package me.lukiiy.beTPA.commands;
 
 import me.lukiiy.beTPA.BeTPA;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Send implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+public class Send {
+    public static void onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("§cThis command can only be used by in-game players.");
-            return true;
-        }
-
-        if (!BeTPA.getInstance().quickPermissionCheck(commandSender, "request")) {
-            commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("permission"));
-            return true;
+            return;
         }
 
         if (strings.length == 0) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("usage").replace("%c", "/tpa <player>"));
-            return true;
+            return;
         }
 
         Player player = (Player) commandSender;
-        Player target = Bukkit.getServer().getPlayer(strings[0]);
+        Player target = BeTPA.getInstance().getServer().getPlayer(strings[0]);
 
         if (target == null) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("notfound"));
-            return true;
-        }
-
-        if (!BeTPA.getInstance().quickPermissionCheck(target, "answer")) {
-            commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("permissionTarget").replace("%p", target.getDisplayName()));
-            return true;
+            return;
         }
 
         switch (BeTPA.getInstance().getTPAManager().sendRequest(player, target)) {
@@ -52,7 +39,5 @@ public class Send implements CommandExecutor {
                 player.sendMessage(BeTPA.getInstance().getConfiguredMsg("already").replace("%p", target.getDisplayName()));
                 break;
         }
-
-        return true;
     }
 }

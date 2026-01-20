@@ -1,6 +1,5 @@
 package me.lukiiy.beTPA;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Request { // record :(
@@ -17,7 +16,7 @@ public class Request { // record :(
     public void cancelExpiry() {
         if (expiryTask < 0) return;
 
-        Bukkit.getServer().getScheduler().cancelTask(expiryTask);
+        BeTPA.getInstance().getServer().getScheduler().cancelTask(expiryTask);
     }
 
     public enum Result {

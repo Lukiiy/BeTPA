@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(files("lib/cb1060.jar"))
+    compileOnly(files("lib/cb-b1.2_01.jar"))
 }
 
 tasks {
