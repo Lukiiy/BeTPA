@@ -52,7 +52,7 @@ public class TPAManager {
         request.cancelExpiry();
 
         Player requester2 = request.requester;
-        if (requester2 != null) requester2.teleportTo(target.getLocation());
+        if (requester2 != null) requester2.teleport(target.getLocation());
 
         if (targetReq.isEmpty()) requests.remove(target);
     }
@@ -65,7 +65,7 @@ public class TPAManager {
             request.cancelExpiry();
             Player requester = request.requester;
 
-            if (requester != null && requester.isOnline()) requester.teleportTo(target.getLocation());
+            if (requester != null && requester.isOnline()) requester.teleport(target.getLocation());
         }
     }
 
