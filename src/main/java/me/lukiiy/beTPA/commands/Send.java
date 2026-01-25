@@ -2,19 +2,21 @@ package me.lukiiy.beTPA.commands;
 
 import me.lukiiy.beTPA.BeTPA;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Send {
-    public static void onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+public class Send implements CommandExecutor {
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("§cThis command can only be used by in-game players.");
-            return;
+            return true;
         }
 
         if (strings.length == 0) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("usage").replace("%c", "/tpa <player>"));
-            return;
+            return true;
         }
 
         Player player = (Player) commandSender;
@@ -22,7 +24,7 @@ public class Send {
 
         if (target == null) {
             commandSender.sendMessage(BeTPA.getInstance().getConfiguredMsg("notfound"));
-            return;
+            return true;
         }
 
         switch (BeTPA.getInstance().getTPAManager().sendRequest(player, target)) {
@@ -39,5 +41,7 @@ public class Send {
                 player.sendMessage(BeTPA.getInstance().getConfiguredMsg("already").replace("%p", target.getDisplayName()));
                 break;
         }
+
+        return true;
     }
 }

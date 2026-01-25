@@ -1,11 +1,8 @@
 # BeTPA
 
-###### This branch is for Craftbukkit b1.2_01.
+###### This branch is for Craftbukkit b1.4_01 build 612
 
-A somewhat simple TPA (Teleport Request) plugin for Minecraft Beta! Probably supports other versions too...  
-
-> [!WARNING]  
-> If you are using b1.3, you might see a warning message about the plugin's main class constructor, this won't be fixed for this backport.
+A somewhat simple TPA (Teleport Request) plugin for Minecraft Beta! Probably supports other versions too...
 
 | Commands            | Description                                                                 |
 |---------------------|-----------------------------------------------------------------------------|

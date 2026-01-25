@@ -4,14 +4,14 @@ plugins {
 }
 
 group = "me.lukiiy"
-version = "1.0-b1.2_01"
+version = "1.0-b1.4_01"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly(files("lib/cb-b1.2_01.jar"))
+    compileOnly(files("lib/cb-b1.4_01_b612.jar"))
 }
 
 tasks {

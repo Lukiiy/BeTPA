@@ -17,10 +17,6 @@ public class BeTPA extends JavaPlugin {
     private static BeTPA instance;
     private TPAManager tpaManager;
 
-    public BeTPA(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
-        super(pluginLoader, instance, desc, folder, plugin, cLoader);
-    }
-
     @Override
     public void onEnable() {
         instance = this;
@@ -28,6 +24,11 @@ public class BeTPA extends JavaPlugin {
 
         tpaManager = new TPAManager();
         tpaManager.time = getConfiguration().getInt("timeout", 60);
+
+        getCommand("tpa").setExecutor(new Send());
+        getCommand("tpaccept").setExecutor(new Accept());
+        getCommand("tpadeny").setExecutor(new Deny());
+        getCommand("tpareload").setExecutor(new Reload());
     }
 
     @Override
@@ -69,25 +70,5 @@ public class BeTPA extends JavaPlugin {
 
     public String getConfiguredMsg(String key) {
         return getConfiguration().getString("msgs." + key, "").replace('&', '§');
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        switch (cmd.getName().toLowerCase()) {
-            case "tpa":
-                Send.onCommand(sender, cmd, commandLabel, args);
-                return true;
-            case "tpaccept":
-                Accept.onCommand(sender, cmd, commandLabel, args);
-                return true;
-            case "tpadeny":
-                Deny.onCommand(sender, cmd, commandLabel, args);
-                return true;
-            case "tpareload":
-                Reload.onCommand(sender, cmd, commandLabel, args);
-                return true;
-        }
-
-        return super.onCommand(sender, cmd, commandLabel, args);
     }
 }
